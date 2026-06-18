@@ -1,3 +1,4 @@
+# type: ignore
 from app.extractor import extract_form_data
 
 # Test avec une image fictive — on va en mettre une vraie juste après
