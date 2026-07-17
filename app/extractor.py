@@ -11,10 +11,10 @@ from typing import Optional, Any, Dict
 
 load_dotenv()
 
-# Initialisation sécurisée du client Groq
+# Initialisation sécurisée du client Groq ou recuperation de la valeur textuelle associée à la variable d'environnement GROQ_API_KEY
 api_key = os.getenv("GROQ_API_KEY")
 if not api_key:
-    raise ValueError("La variable d'environnement GROQ_API_KEY est manquante.")
+    raise ValueError("La variable d'environnement GROQ_API_KEY est manquante!")
 
 client = groq.Groq(api_key=api_key)
 
@@ -23,12 +23,12 @@ def clean_json_string(raw_text: str) -> str:
     Nettoie de manière robuste la réponse textuelle de l'IA pour n'extraire
     que la chaîne JSON valide, même en présence de texte d'accompagnement ou de markdown.
     """
-    text = raw_text.strip()
+    text = raw_text.strip() #suppression des espaces vides, tab ou sauts de ligne
     
     # Stratégie 1 : Extraction par Expression Régulière du premier bloc {...} ou [...] de manière NON-GLOUTONNE (.*?)
     match = re.search(r"(\{.*?\}|\[.*?\])", text, re.DOTALL)
     if match:
-        text = match.group(1)
+        text = match.group(1) #-- on va extraire uniquement ce qui est entre les accolades ou les crochets, ce qui correspond à la structure JSON attendue
     else:
         # Si aucune accolade n'est isolée, on applique le nettoyage classique du markdown au cas où
         if text.startswith("```"):
@@ -43,7 +43,7 @@ def normalize_dict_keys(d: dict) -> dict:
     Normalise toutes les clés d'un dictionnaire en minuscules, sans espaces ni tirets,
     pour éliminer les faux négatifs lors de l'alignement avec le schéma.
     """
-    if not isinstance(d, dict):
+    if not isinstance(d, dict):   #-- Si ce n'est pas un dict, on retourne un dict vide pour éviter les crashs
         return {}
     return {str(k).strip().lower().replace(" ", "").replace("_", "").replace("-", ""): v for k, v in d.items()}
 
@@ -62,7 +62,7 @@ def extract_form_data(image_path: str, prompt: str, schema_fields: list) -> dict
         return {"error": f"Fichier image introuvable : {image_path}"}
 
     # Détecte le type de l'image
-    extension = image_path.split(".")[-1].lower()
+    extension = image_path.split(".")[-1].lower() 
     media_types = {
         "jpg": "image/jpeg",
         "jpeg": "image/jpeg",

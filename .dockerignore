@@ -1,0 +1,18 @@
+# Environnements virtuels (Ultra lourd et inutile dans le conteneur)
+.venv/
+venv/
+ENV/
+
+# Caches Python
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Fichiers de configuration locaux et secrets (Sécurité !)
+.env
+.git/
+.gitignore
+
+# Données locales de test (Évite d'embarquer les uploads locaux)
+formEye_uploads/

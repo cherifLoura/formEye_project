@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  formeye-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: formeye_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    volumes:
+      - formeye_uploads:/app/formEye_uploads
+
+volumes:
+  formeye_uploads:
+    name: formeye_persistent_uploads
